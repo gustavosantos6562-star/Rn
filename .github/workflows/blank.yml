@@ -1,0 +1,37 @@
+
+name: Build Mobilador Free Fire
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar projeto
+        uses: actions/checkout@v4
+
+      - name: Preparar ambiente
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git unzip zip
+
+      - name: Verificar arquivos
+        run: |
+          echo "Verificando o projeto..."
+          ls -la
+          find . -maxdepth 2 -type f | sort | head -200
+
+      - name: Salvar arquivos do projeto
+        uses: actions/upload-artifact@v4
+        with:
+          name: projeto-mobilador
+          path: |
+            **
+            !.git/**
+          if-no-files-found: error
+          
